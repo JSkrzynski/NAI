@@ -1,3 +1,0 @@
-D:/Materiały z lekcji/NAI/zad1/cmake-build-debug/CMakeFiles/zad1.dir
-D:/Materiały z lekcji/NAI/zad1/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/Materiały z lekcji/NAI/zad1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
