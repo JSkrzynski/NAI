@@ -11,12 +11,14 @@ std::random_device rd;
 std::mt19937 mt_generator(rd());
 
 
-double optimize(myfunction_t function, vector<double> domain, int maxIterations=10000){
+vector<double> optimize(myfunction_t function, vector<double> domain, int maxIterations=10000){
     clock_t startClock, endClock;
     startClock = clock();
     double time;
     uniform_real_distribution<double> dist(domain.at(0), domain.at(1));
     double currentBest = function(domain.at(0), domain.at(1));
+    double x;
+    double y;
 
     for(int i = 0; i < maxIterations; i++){
         double rand1 = dist(mt_generator);
@@ -26,13 +28,16 @@ double optimize(myfunction_t function, vector<double> domain, int maxIterations=
 
         if(temp < currentBest){
             currentBest = temp;
+            x = rand1;
+            y = rand2;
         }
     }
 
     endClock = clock();
     time = ((double) (endClock - startClock)) / CLOCKS_PER_SEC;
-    cout<<"Iterations: "<<maxIterations<<" Time taken: "<<time<<" Lowest: ";
-    return currentBest;
+    cout<<"Iterations: "<<maxIterations<<" Time taken: "<<time<<endl;
+    vector<double> result = {x, y};
+    return result;
 }
 
 int main(int argc, char **argv){
@@ -61,9 +66,9 @@ int main(int argc, char **argv){
     try {
         vector<string> arguments(argv, argv + argc);
         auto selectedFunction = arguments.at(1);
-        for(int i = 0; i < 10; i++){
-            cout<<optimize(myFunctions.at(selectedFunction),domain.at(selectedFunction),10000)<<endl;
-        }
+        vector<double> result = optimize(myFunctions.at(selectedFunction),domain.at(selectedFunction),10000);
+        for(double i: result)
+            cout<< i << ' ';
     }
     catch (std::out_of_range aor) {
         cout << "Error, possible arguments:  ";
