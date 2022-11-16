@@ -150,6 +150,88 @@ chromosome generate_chromosome_encoding(double x, double y) {
     return c;
 }
 
+//roulette wheel selection
+int roulette_wheel_selection(std::vector<chromosome> population) {
+    std::vector<double> fitnesses;
+    double total_fitness = 0;
+
+    for (auto c : population) {
+        double f = fitness(c);
+        fitnesses.push_back(f);
+        total_fitness += f;
+    }
+
+    uniform_real_distribution<double> distribution(0, total_fitness);
+    double random = distribution(mt_generator);
+    double sum = 0;
+
+    for (int i = 0; i < fitnesses.size(); i++) {
+        sum += fitnesses[i];
+        if (sum >= random) {
+            return i;
+        }
+    }
+    return 0;
+}
+
+//two point crossover
+chromosome two_point_crossover(chromosome c1, chromosome c2) {
+    uniform_int_distribution<int> distribution(1, chromosome_size_const - 1);
+    int point1 = distribution(mt_generator);
+    int point2 = distribution(mt_generator);
+    if (point1 > point2) {
+        std::swap(point1, point2);
+    }
+    chromosome result;
+    result.insert(result.end(), c1.begin(), c1.begin() + point1);
+    result.insert(result.end(), c2.begin() + point1, c2.begin() + point2);
+    result.insert(result.end(), c1.begin() + point2, c1.end());
+    return result;
+}
+
+//crossover
+chromosome crossover(std::vector<chromosome> population) {
+    //select two random ints
+    int index1 = std::uniform_int_distribution<int> (0, population.size() - 1)(mt_generator);
+    int index2 = std::uniform_int_distribution<int> (0, population.size() - 1)(mt_generator);
+
+    //select two random chromosomes
+    chromosome c1 = population[index1];
+    chromosome c2 = population[index2];
+
+    //select a random crossover point
+    int crossover_point = std::uniform_int_distribution<int> (0, chromosome_size_const - 1)(mt_generator);
+
+    //perform crossover
+    chromosome child;
+    child.insert(child.end(), c1.begin(), c1.begin() + crossover_point);
+    child.insert(child.end(), c2.begin() + crossover_point, c2.end());
+    return child;
+}
+
+//mutation
+chromosome mutation(chromosome c) {
+    //select a random mutation point
+    int mutation_point = std::uniform_int_distribution<int> (0, chromosome_size_const - 1)(mt_generator);
+
+    //perform mutation
+    c[mutation_point] = !c[mutation_point];
+    return c;
+}
+
+//multi-point mutation
+chromosome multi_point_mutation(chromosome c, int number_of_points_to_mutate){
+    //select a random mutation point
+    for (int i = 0; i < number_of_points_to_mutate; i++) {
+        int mutation_point = std::uniform_int_distribution<int> (0, chromosome_size_const - 1)(mt_generator);
+        //perform mutation
+        c[mutation_point] = !c[mutation_point];
+    }
+    return c;
+}
+
+
+
 int main() {
 
     //generate a random population with encoding
@@ -164,5 +246,39 @@ int main() {
     cout << endl;
     auto p = decode_chromosome(c);
     cout << "x: " << p.first << " y: " << p.second << " fitness: " << fitness(c) << endl;
+
+    //test roulette wheel selection
+    cout << endl<<"roulette wheel selection"<<endl;
+    int index = roulette_wheel_selection(population);
+    cout << "index: " << index << endl;
+    auto c1 = population[index];
+    p = decode_chromosome(c1);
+    cout << "x: " << p.first << " y: " << p.second << " fitness: " << fitness(c1) << endl;
+
+    //test crossover
+    cout << endl<<"crossover"<<endl;
+    chromosome child = crossover(population);
+    p = decode_chromosome(child);
+    cout << "x: " << p.first << " y: " << p.second << " fitness: " << fitness(child) << endl;
+
+    //test mutation
+    cout << endl<< "mutation" << endl;
+    chromosome mutated_child = mutation(child);
+    p = decode_chromosome(mutated_child);
+    cout << "x: " << p.first << " y: " << p.second << " fitness: " << fitness(mutated_child) << endl;
+
+    //test multi-point mutation
+    cout << endl<< "multi-point mutation" << endl;
+    chromosome mutated_child2 = multi_point_mutation(child, 2);
+    p = decode_chromosome(mutated_child2);
+    cout << "x: " << p.first << " y: " << p.second << " fitness: " << fitness(mutated_child2) << endl;
+
+    //test two-point crossover
+    cout << endl << "two-point crossover" << endl;
+    chromosome child2 = two_point_crossover(population[0], population[1]);
+    p = decode_chromosome(child2);
+    cout << "x: " << p.first << " y: " << p.second << " fitness: " << fitness(child2) << endl;
+    
+
     return 0;
 }
