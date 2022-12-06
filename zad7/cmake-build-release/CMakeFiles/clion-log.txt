@@ -1,0 +1,5 @@
+"C:\Program Files\JetBrains\CLion 2022.2.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Release "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2022.2.4/bin/ninja/win/ninja.exe" -G Ninja -S C:\JSkrzynski\opencv-windows-project-demo -B C:\JSkrzynski\opencv-windows-project-demo\cmake-build-release
+-- Found OpenCV: C:/JSkrzynski/opencv-4.x/opencv-4.x/cmake-build-release (found version "4.6.0") 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/JSkrzynski/opencv-windows-project-demo/cmake-build-release
