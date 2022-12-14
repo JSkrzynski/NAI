@@ -1,3 +1,0 @@
-C:/JSkrzynski/opencv-windows-project-demo/cmake-build-release/CMakeFiles/ocvdemo.dir
-C:/JSkrzynski/opencv-windows-project-demo/cmake-build-release/CMakeFiles/edit_cache.dir
-C:/JSkrzynski/opencv-windows-project-demo/cmake-build-release/CMakeFiles/rebuild_cache.dir
