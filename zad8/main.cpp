@@ -71,7 +71,7 @@ int main(int argc, char **argv) {
             int y1 = (int) (m1.m01 / m1.m00);
             ellipse(src_img, p1, Size{5, 5}, 0.0, 0, 360, {0, 255, 255}, 3);
 
-            if (abs(y1 - y) < 20) {
+            if (abs(y1 - y) < 30) {
                 line(src_img, p, p1, cv::Scalar(255, 0, 0), 2, cv::LINE_8);
                 line(src_img, p_2, p1_2, cv::Scalar(0, 255, 0), 2, cv::LINE_8);
             }
